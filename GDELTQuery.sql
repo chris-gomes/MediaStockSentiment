@@ -8,8 +8,6 @@ SELECT
   AVG(g.AvgTone) AS AvgTone
 FROM
   [gdelt-bq:full.events] g
-WHERE
-  ActionGeo_CountryCode = "US"
 GROUP BY
   MonthYear,
   Actor1Name,
