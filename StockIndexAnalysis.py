@@ -9,7 +9,7 @@ nasdaq = pandas.read_csv('C:\\Users\ChrisGomes\Projects\MediaStock\\nasdaq.csv')
 sp500 = pandas.read_csv('C:\\Users\ChrisGomes\Projects\MediaStock\s&p500.csv')
 
 # %% Calculate the market cap of each index for comparison
-dow30['CloseCap'] = dow30['Close'] * dow30['Volume']
+dow30['CloseCap'] = dow30['Close'] * dow30['Volume']\
 nasdaq['CloseCap'] = nasdaq['Close'] * nasdaq['Volume']
 sp500['CloseCap'] = sp500['Close'] * sp500['Volume']
 
