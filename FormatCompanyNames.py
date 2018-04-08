@@ -16,7 +16,7 @@ names['Name'] = names['Name'].str.replace(".", "")
 names['Name'] = names['Name'].str.replace(",", "")
 
 # Add Google to list to account for name change to Alphabet
-google = pd.DataFrame([['GOOGLE']], columns=['Name'])
+google = pd.DataFrame([['GOOGLE'],['INVESTOR']], columns=['Name'])
 names = names.append(google)
 
 # Export names out to a new csv
