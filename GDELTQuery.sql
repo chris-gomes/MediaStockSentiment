@@ -5,10 +5,12 @@ SELECT
   AVG(g.GoldsteinScale) AS GoldsteinScale,
   AVG(g.NumMentions) AS NumMentions,
   AVG(g.NumSources) AS NumSources,
-  AVG(g.AvgTone) AS AvgTone
+  AVG(g.AvgTone) AS AvgTone,
+  ActionGeo_CountryCode AS CountryCode
 FROM
   [gdelt-bq:full.events] g
 GROUP BY
   MonthYear,
   Actor1Name,
-  Actor2Name
+  Actor2Name,
+  CountryCode
