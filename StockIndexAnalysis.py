@@ -4,9 +4,9 @@ import matplotlib
 %matplotlib inline
 
 # %% Import stock indices' data files
-dow30 = pandas.read_csv('C:\\Users\ChrisGomes\Projects\MediaStock\dow30.csv')
-nasdaq = pandas.read_csv('C:\\Users\ChrisGomes\Projects\MediaStock\\nasdaq.csv')
-sp500 = pandas.read_csv('C:\\Users\ChrisGomes\Projects\MediaStock\s&p500.csv')
+dow30 = pandas.read_csv('.\data\dow30.csv')
+nasdaq = pandas.read_csv('.\data\\nasdaq.csv')
+sp500 = pandas.read_csv('.\data\s&p500.csv')
 
 # %% Calculate the market cap of each index for comparison
 dow30['CloseCap'] = dow30['Close'] * dow30['Volume']\

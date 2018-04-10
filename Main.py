@@ -5,8 +5,8 @@ import datetime as dt
 %matplotlib inline
 
 # %% Import Data Sets
-nasdaq = pd.read_csv('C:\\Users\ChrisGomes\Projects\MediaStock\\nasdaqFull.csv') # Source: https://finance.yahoo.com/quote/%5EIXIC/history?ltr=1
-media = pd.read_csv('C:\\Users\ChrisGomes\Projects\MediaStock\media.csv') # Source: GDELT Project on Google CLoud Platform
+nasdaq = pd.read_csv('.\data\\nasdaqFull.csv') # Source: https://finance.yahoo.com/quote/%5EIXIC/history?ltr=1
+media = pd.read_csv('.\data\media.csv') # Source: GDELT Project on Google CLoud Platform
 
 # %% Stock Price Date Formating and Aggregation
 nasdaq['Date'] = pd.to_datetime(nasdaq['Date']) # convert to date type in data frame
