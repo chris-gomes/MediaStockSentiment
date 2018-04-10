@@ -29,7 +29,7 @@ for name in attributeCols:
 # add up occurances InUS, NASDAQActor1 and NASDAQActor2
 goldToneMSGrouped = media.groupby('MonthYear')['GoldsteinScale', 'AvgTone', 'MentionsPerSource'].mean() # aggregate GoldsteinScale, AvgTone, and MentionsPerSource
 inUSNasdaqGrouped = media.groupby('MonthYear')['InUS', 'NASDAQActor1', 'NASDAQActor2'].sum() # aggregate InUS, NASDAQActor1 and NASDAQActor2
-mediaGrouped = pd.merge(left = goldToneMSGrouped, right = inUSNasdaqGrouped, left_on='MonthYear', 'MonthYear') # merge columns back together
+mediaGrouped = pd.merge(left = goldToneMSGrouped, right = inUSNasdaqGrouped, left_on='MonthYear', right_on='MonthYear') # merge columns back together
 
 # Export all media to new csv
 mediaGrouped.to_csv(path_or_buf='C:\\Users\ChrisGomes\Projects\MediaStock\media.csv')
