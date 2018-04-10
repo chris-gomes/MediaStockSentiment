@@ -106,3 +106,6 @@ ENV/
 # spark
 metastore_db/
 spark-warehouse/
+
+# files
+files/
