@@ -107,5 +107,5 @@ ENV/
 metastore_db/
 spark-warehouse/
 
-# files
-files/
+# stored data
+data/
