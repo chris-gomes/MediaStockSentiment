@@ -19,7 +19,11 @@ media['InUS'] = np.where(media.CountryCode=='US', 1, 0) # dummy code for if occu
 media['NASDAQActor1'] = np.where(media.Actor1Name in companyNames, 1, 0) # dummy code if actor 1 in NASDAQ
 media['NASDAQActor2'] = np.where(media.Actor2Name in companyNames, 1, 0) # dummy code if actor 2 in NASDAQ
 
-# check for NAs
+# check if NAs are present in any of the attribute columns
+attributeCols = ['GoldsteinScale', 'AvgTone', 'MentionsPerSource', 'InUS', 'NASDAQActor1', 'NASDAQActor2']
+for name in attributeCols:
+    if pandas.isnull(media[name]).any():
+        print('NAs present in ' + name)
 
 # Aggreate media data frame to average out GoldsteinScale, AvgTone, and MentionsPerSource and
 # add up occurances InUS, NASDAQActor1 and NASDAQActor2
@@ -28,4 +32,4 @@ inUSNasdaqGrouped = media.groupby('MonthYear')['InUS', 'NASDAQActor1', 'NASDAQAc
 mediaGrouped = pd.merge(left = goldToneMSGrouped, right = inUSNasdaqGrouped, left_on='MonthYear', 'MonthYear') # merge columns back together
 
 # Export all media to new csv
-media.to_csv(path_or_buf='C:\\Users\ChrisGomes\Projects\MediaStock\media.csv')
+mediaGrouped.to_csv(path_or_buf='C:\\Users\ChrisGomes\Projects\MediaStock\media.csv')
