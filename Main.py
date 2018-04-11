@@ -6,7 +6,7 @@ import datetime as dt
 
 # %% Import Data Sets
 nasdaq = pd.read_csv('.\data\\nasdaqFull.csv') # Source: https://finance.yahoo.com/quote/%5EIXIC/history?ltr=1
-media = pd.read_csv('.\data\media.csv') # Source: GDELT Project on Google CLoud Platform
+media = pd.read_csv('.\data\mediaFormatted.csv') # Source: GDELT Project on Google CLoud Platform
 
 # %% Stock Price Date Formating and Aggregation
 nasdaq['Date'] = pd.to_datetime(nasdaq['Date']) # convert to date type in data frame
@@ -16,6 +16,6 @@ nasdaqMonthly = nasdaq.groupby(by='MonthYear')['Close'].mean().reset_index()
 
 # %% Data Plots and Outliers for Media Features
 media.plot.scatter(x='MonthYear', y='GoldsteinScale') # Plot for Goldstein Scale feature of media data set
-media.plot.scatter(x='MonthYear', y='NumMentions') # Plot for NumMentions feature of media data set
-media.plot.scatter(x='MonthYear', y='NumSources') # Plot for NumSources feature of media data set
+
+media.plot.scatter(x='MonthYear', y='MentionsPerSource') # Plot for NumSources feature of media data set
 media.plot.scatter(x='MonthYear', y='AvgTone') # Plot for AvgTone feature of media data set
