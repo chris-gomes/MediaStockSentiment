@@ -5,6 +5,7 @@ from sklearn import model_selection
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
+from sklearn.metrics import confusion_matrix
 %matplotlib inline
 
 # %% Import Data Sets
@@ -41,6 +42,8 @@ def testModel(name, tA, tR, vA, k=None, kernel=None):
         model = LogisticRegression(random_state=8)
     elif name == 'SVM': # creates SVM model
         model = SVC(kernel=kernel, random_state=8)
+    elif name == 'KMeans': # create KMeans model
+        model = KMeans(n_clusters=2, random_state=8)
     model.fit(X=tA, y=tR) # train model
     return model.predict(X=vA) # return series of predicitons
 
@@ -86,10 +89,12 @@ for name in list(featureNames): # normalize each of the columns
     all[name] = minMaxNormalize(all[name])
 
 # %% Train and Validation Subsetting
+# Only GoldsteinScale, AvgTone and MentionsPerSource were kept as attributes since
+# the others had significant increasing trends after 2005, which could throw off the model predicitons
 both = model_selection.train_test_split(all, train_size=0.7, random_state=11, shuffle=True) # get array with both training and validation
-trainAttributes = both[0][['GoldsteinScale', 'MentionsPerSource', 'AvgTone', 'InUS', 'NASDAQActor1', 'NASDAQActor2']]
+trainAttributes = both[0][['GoldsteinScale', 'AvgTone', 'MentionsPerSource']]
 trainResults = both[0]['Increased']
-validationAttributes = both[1][['GoldsteinScale', 'MentionsPerSource', 'AvgTone', 'InUS', 'NASDAQActor1', 'NASDAQActor2']]
+validationAttributes = both[1][['GoldsteinScale', 'AvgTone', 'MentionsPerSource']]
 validationResults = both[1]['Increased']
 
 # %% kNN Prediction of Future Stock Price Movement
@@ -103,6 +108,11 @@ for k in range(1,21): # try kNN algorithm for multiple Ks
     scores.append(percentEqual(kNNPred, validationResults))
 resultskNN = pd.DataFrame({'k':list(range(1,21)), 'PercentCorrect':scores})
 resultskNN.plot.scatter(x='k', y='PercentCorrect') # plot percent correct over k
+kNNPred = testModel(name='kNN',
+                    tA=trainAttributes,
+                    tR=trainResults,
+                    vA=validationAttributes,
+                    k=3) # run model and get predictions
 resultskNN.loc[resultskNN.PercentCorrect.idxmax(),] # highest performing k value
 
 # %% Logistic Regression Prediction of Future Stock Price Movement
@@ -125,3 +135,26 @@ for kernel in kernels:
 svmResults = pd.DataFrame({'kernels':list(range(1,4)), 'PercentCorrect':scores})
 svmResults.plot.scatter(x='kernels', y='PercentCorrect') # plot percent correct for each kernal
 svmResults.loc[svmResults.PercentCorrect.idxmax(),] # highedt performing kernal value (all were equal)
+
+# %% Stacked Ensemble model (have each of the models vote on whether prices will increase)
+votesForIncrease = kNNPred + logRegPred + svmPred # combine all votes for an increase
+votesForIncrease = pd.Series(data=votesForIncrease, dtype=np.int64) # convert to series for easy calculations
+finalDecisions = votesForIncrease.apply(lambda x: 1 if x >= 2 else 0) # find all cases where majority voted for an increase
+validationResults = pd.Series(validationResults.tolist()) # reset indices on validation results
+percentEqual(finalDecisions, validationResults) # find percent of correct guesses
+confusion_matrix(y_true=validationResults, y_pred=finalDecisions) # shows that prediciton was always yes
+
+# %% Final Analysis in Model Comparison and Prediciton Results
+"""
+In comparing the models, the difference in prediction percentages were minimal.
+In the end, the biggest observation when comparing the models is the fact that the
+Logistic Regression,SVM, and the stacked ensembled models all had the same percentage
+correctness. This occured because both the logistic regression and SVM models predicted
+that the closed price would always increase, which could have occured due to an
+underlining trend in the data and could hint towards the idea in finance that in the
+long-term stock prices always rise. In the end, it does not appear that these
+attributes are useful in prediciting where closing prices will be during the next month.
+The kNN model, for example, was only correct about 62% of the time, which is only
+marginally better than blindly guessing. Going forward, this process could be
+attempted with other attributes that may be able to increase the prediction ability.
+"""
