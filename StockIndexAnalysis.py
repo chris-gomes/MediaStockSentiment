@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # %% Import libraries to be used in script
 import pandas
 import matplotlib
