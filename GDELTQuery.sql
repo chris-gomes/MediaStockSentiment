@@ -1,3 +1,6 @@
+
+-- Author: Christopher Gomes
+
 SELECT
   g.MonthYear AS MonthYear,
   g.Actor1Name AS Actor1Name,

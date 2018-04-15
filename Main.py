@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# Author: Christopher Gomes
+
 # %% Import Libraries
 import pandas as pd
 import numpy as np
