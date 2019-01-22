@@ -109,3 +109,6 @@ spark-warehouse/
 
 # stored data
 data/
+
+# vscode directory
+.vscode/
